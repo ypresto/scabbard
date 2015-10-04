@@ -15,13 +15,23 @@
  */
 package net.ypresto.scabbard.example.object;
 
+import android.content.Context;
+
+import net.ypresto.scabbard.example.qualifier.ForActivity;
 import net.ypresto.scabbard.example.scope.ActivityScope;
 
 import javax.inject.Inject;
 
 @ActivityScope
 public class ActivitySingletonObject {
+    @Inject @ForActivity Context context;
+
     @Inject
     public ActivitySingletonObject() {
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() + " (Context: " + context + ")";
     }
 }

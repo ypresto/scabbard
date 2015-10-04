@@ -20,18 +20,12 @@ import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import net.ypresto.scabbard.component.ScabbardActivityComponent;
-import net.ypresto.scabbard.example.component.MyActivityComponent;
 import net.ypresto.scabbard.example.helper.ComponentHelper;
-import net.ypresto.scabbard.holder.ActivityComponentHolder;
 
-public class MainActivity extends FragmentActivity implements ActivityComponentHolder {
-    private MyActivityComponent activityComponent;
-
+public class MainActivity extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        activityComponent = ComponentHelper.createActivityComponent(this);
-        activityComponent.inject(this);
+        ComponentHelper.createActivityComponent(this).inject(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getSupportFragmentManager().beginTransaction().add(R.id.container, new MainActivityFragment()).commit();
@@ -58,10 +52,5 @@ public class MainActivity extends FragmentActivity implements ActivityComponentH
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public ScabbardActivityComponent getActivityComponent() {
-        return activityComponent;
     }
 }

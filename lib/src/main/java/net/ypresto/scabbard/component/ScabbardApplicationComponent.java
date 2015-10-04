@@ -16,8 +16,7 @@
 package net.ypresto.scabbard.component;
 
 /**
- * Marker interface for application-scoped component.
- * Add {@code extends} clause to your component.
+ * Marker interface for application-scoped component. Add {@code extends} clause to your component.
  */
 public interface ScabbardApplicationComponent {
 }

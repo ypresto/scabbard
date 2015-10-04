@@ -18,38 +18,22 @@ package net.ypresto.scabbard.example;
 import android.app.Application;
 import android.util.Log;
 
-import net.ypresto.scabbard.component.ComponentFactory;
-import net.ypresto.scabbard.component.ScabbardApplicationComponent;
-import net.ypresto.scabbard.example.component.MyApplicationComponent;
+import com.squareup.leakcanary.LeakCanary;
+
 import net.ypresto.scabbard.example.component.MyComponentFactory;
 import net.ypresto.scabbard.example.helper.ComponentHelper;
 import net.ypresto.scabbard.example.object.ApplicationSingletonObject;
-import net.ypresto.scabbard.holder.ApplicationComponentHolder;
-import net.ypresto.scabbard.holder.ComponentFactoryHolder;
 
 import javax.inject.Inject;
 
-public class MyApplication extends Application implements ComponentFactoryHolder, ApplicationComponentHolder {
-    private final MyComponentFactory componentFactory = new MyComponentFactory();
-
+public class MyApplication extends Application {
     @Inject ApplicationSingletonObject object;
-    private MyApplicationComponent applicationComponent;
 
     @Override
     public void onCreate() {
-        applicationComponent = ComponentHelper.createApplicationComponent(this);
-        applicationComponent.inject(this);
+        ComponentHelper.createApplicationComponent(this, new MyComponentFactory()).inject(this);
         super.onCreate();
+        LeakCanary.install(this);
         Log.d("MyApplication", "@Singleton: " + object.toString());
-    }
-
-    @Override
-    public ScabbardApplicationComponent getApplicationComponent() {
-        return applicationComponent;
-    }
-
-    @Override
-    public ComponentFactory getComponentFactory() {
-        return componentFactory;
     }
 }

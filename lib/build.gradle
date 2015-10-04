@@ -5,7 +5,7 @@ android {
     buildToolsVersion '23.0.1'
 
     defaultConfig {
-        minSdkVersion 4
+        minSdkVersion 14
         targetSdkVersion 23
     }
     buildTypes {
@@ -17,6 +17,6 @@ android {
 }
 
 dependencies {
-    provided 'com.android.support:support-v4:23.0.1'
+    provided 'com.android.support:support-v4:23.0.1' // optional, just want to use interface definition.
     compile fileTree(dir: 'libs', include: ['*.jar'])
 }

@@ -12,19 +12,21 @@ However Dagger itself does not provide way to manage component instances
 per Android lifecycles, required to use this feature (as it is pure-java
 library).
 
-This library provides straight forward steps to manage and use scoped
-components in Application, Activity, Fragment, Service.
-Only things you should do are to implement every interface and to call
-helper methods from `onCreate()`.
+This library automatically manages scoped components in Application,
+Activity, Fragment, Service. Only things you should do are:
 
-- Encapsulates component instantiation logic into `ComponentFactory`, which is
-  held by Application subclass (so you can easily replace it in test).
-- Provides static methods to easily create components with `this` of
-  Activity/Service/Fragment.
+- Implement `ComponentFacotry`.
+- Mark your components with `Scabbard***Component` interface.
+- (Optional) Wrap helper to cast to actual component type from
+  `Scabbard***Component`.
+- Call helper methods from `onCreate()`, like
+  `ComponentHelper.createApplicationComponent(this).inject(this);`
 
-## Limitations
+## Requirements / Limitations
 
 - Designed for Dagger 2. Scoped bindings is not supported in Dagger 1.
+- Android >= 4.0. Because ActivityLifecycleCallbacks is used to release 
+  component.
 - One component per one Activity/Fragment/Service design is not
   supported.
 - Support Library v4 is required for fragment scope. Native fragment is
@@ -35,9 +37,7 @@ helper methods from `onCreate()`.
 
 Gradle dependency:
 
-TBD. Use jitpack for now.
-
-https://jitpack.io/#ypresto/scabbard/485381696d
+TBD. Use [jitpack](https://jitpack.io/) for now.
 
 ## Setup and examples
 
@@ -49,7 +49,6 @@ https://jitpack.io/#ypresto/scabbard/485381696d
 
 Please open issue if you want belows or other things to be implemented.
 
-- Component holders can be replaced using HashMap and ActivityLifecycleCallbacks.
 - Creating ComponentHelper to cast is not efficient way. Code generation maybe
   useful to automate it.
 - Singleton scope kept during configuration change (i.e. orientation change)

@@ -21,10 +21,7 @@ import android.app.Service;
 import android.support.v4.app.Fragment;
 
 /**
- * Factory interface for components.
- * Implement this to provide components used by scabbard.
- *
- * @see net.ypresto.scabbard.holder.ComponentFactoryHolder
+ * Factory interface for components. Implement this to provide components used by scabbard.
  */
 public interface ComponentFactory {
     /**
@@ -37,21 +34,24 @@ public interface ComponentFactory {
     /**
      * Creates activity-scoped component.
      *
-     * @param activity Activity instance for instantiating modules.
+     * @param applicationComponent Parent component.
+     * @param activity             Activity instance for instantiating modules.
      */
     ScabbardActivityComponent createActivityComponent(ScabbardApplicationComponent applicationComponent, Activity activity);
 
     /**
      * Creates fragment-scoped component.
      *
-     * @param fragment Fragment instance for instantiating modules.
+     * @param activityComponent Parent component.
+     * @param fragment          Fragment instance for instantiating modules.
      */
     ScabbardFragmentComponent createFragmentComponent(ScabbardActivityComponent activityComponent, Fragment fragment);
 
     /**
      * Creates service-scoped component.
      *
-     * @param service Service instance for instantiating modules.
+     * @param applicationComponent Parent component.
+     * @param service              Service instance for instantiating modules.
      */
     ScabbardServiceComponent createServiceComponent(ScabbardApplicationComponent applicationComponent, Service service);
 }

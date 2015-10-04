@@ -18,105 +18,68 @@ package net.ypresto.scabbard;
 import android.app.Activity;
 import android.app.Application;
 import android.app.Service;
-import android.content.Context;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 
 import net.ypresto.scabbard.component.ComponentFactory;
 import net.ypresto.scabbard.component.ScabbardActivityComponent;
 import net.ypresto.scabbard.component.ScabbardApplicationComponent;
 import net.ypresto.scabbard.component.ScabbardFragmentComponent;
 import net.ypresto.scabbard.component.ScabbardServiceComponent;
-import net.ypresto.scabbard.holder.ActivityComponentHolder;
-import net.ypresto.scabbard.holder.ApplicationComponentHolder;
-import net.ypresto.scabbard.holder.ComponentFactoryHolder;
 
 /**
- * Provides predefined methods for create and look up components which are scoped in application,
- * activity, fragment, service.
+ * Manages scoped components and provides methods to create and get them in application, activity, fragment, service.
  * You might want to define helper class which casts scabbard's component marker interfaces to actual components.
  */
 public class Scabbard {
+    private static final ApplicationScopeManager APPLICATION_SCOPE_MANAGER = new ApplicationScopeManager();
+
     /**
-     * Creates application-scoped component using {@link ComponentFactory}.
-     * It will look up {@link ComponentFactoryHolder} using given application instance.
-     *
-     * @param application Application instance used to look up holder. It is also passed to the factory.
-     * @see ComponentFactoryHolder
+     * Creates application-scoped component (root scope) using given {@link ComponentFactory}.
      */
-    public static ScabbardApplicationComponent createApplicationComponent(Application application) {
-        ComponentFactory componentFactory = getComponentFactory(application);
-        return componentFactory.createApplicationComponent(application);
+    public static ScabbardApplicationComponent createApplicationComponent(Application application, ComponentFactory componentFactory) {
+        ScabbardApplicationComponent applicationComponent = componentFactory.createApplicationComponent(application);
+        APPLICATION_SCOPE_MANAGER.registerScope(application, componentFactory, applicationComponent);
+        return applicationComponent;
     }
 
     /**
-     * Creates activity-scoped component using {@link ScabbardApplicationComponent} and
-     * {@link ComponentFactory}.
-     * It will look up {@link ApplicationComponentHolder} and {@link ComponentFactoryHolder}
-     * using given activity instance.
-     *
-     * @param activity Activity instance used to look up holders. It is also passed to the factory.
-     * @see ComponentFactoryHolder
+     * Creates activity-scoped component using {@link ScabbardApplicationComponent} and {@link ComponentFactory}.
      */
     public static ScabbardActivityComponent createActivityComponent(Activity activity) {
-        ScabbardApplicationComponent applicationComponent = getApplicationComponent(activity);
-        ComponentFactory componentFactory = getComponentFactory(activity);
-        return componentFactory.createActivityComponent(applicationComponent, activity);
+        ApplicationScopeInfo scopeInfo = APPLICATION_SCOPE_MANAGER.getScopeInfo(activity);
+        ScabbardApplicationComponent applicationComponent = scopeInfo.getApplicationComponent();
+        ScabbardActivityComponent activityComponent = scopeInfo.getComponentFactory().createActivityComponent(applicationComponent, activity);
+        scopeInfo.getActivityComponentManager().setComponent(activity, activityComponent);
+        return activityComponent;
     }
 
     /**
-     * Creates fragment-scoped component using {@link ScabbardActivityComponent} and
-     * {@link ComponentFactory}.
-     * Requires the activity hosts fragment to implement {@link ActivityComponentHolder}.
-     *
-     * @param fragment Fragment instance used to look up holders. It is also passed to the factory.
-     * @see ComponentFactoryHolder
+     * Creates fragment-scoped component using {@link ScabbardActivityComponent} and {@link ComponentFactory}.
      */
     public static ScabbardFragmentComponent createFragmentComponent(Fragment fragment) {
-        ActivityComponentHolder holder = (ActivityComponentHolder) fragment.getActivity();
-        ComponentFactory componentFactory = getComponentFactory(fragment.getActivity());
-        return componentFactory.createFragmentComponent(holder.getActivityComponent(), fragment);
+        FragmentActivity activity = fragment.getActivity();
+        ApplicationScopeInfo scopeInfo = APPLICATION_SCOPE_MANAGER.getScopeInfo(activity);
+        ComponentFactory componentFactory = scopeInfo.getComponentFactory();
+        ScabbardActivityComponent activityComponent = scopeInfo.getActivityComponentManager().getComponent(activity);
+        return componentFactory.createFragmentComponent(activityComponent, fragment);
     }
 
     /**
-     * Creates service-scoped component using {@link ScabbardApplicationComponent} and
-     * {@link ComponentFactory}.
-     * It will look up {@link ApplicationComponentHolder} and {@link ComponentFactoryHolder}
-     * using given service instance.
-     *
-     * @param service Service instance used to look up holders. It is also passed to the factory.
-     * @see ComponentFactoryHolder
+     * Creates service-scoped component using {@link ScabbardApplicationComponent} and {@link ComponentFactory}.
      */
     public static ScabbardServiceComponent createServiceComponent(Service service) {
-        ScabbardApplicationComponent applicationComponent = getApplicationComponent(service);
-        ComponentFactory componentFactory = getComponentFactory(service);
-        return componentFactory.createServiceComponent(applicationComponent, service);
+        ApplicationScopeInfo scopeInfo = APPLICATION_SCOPE_MANAGER.getScopeInfo(service);
+        ScabbardApplicationComponent applicationComponent = scopeInfo.getApplicationComponent();
+        return scopeInfo.getComponentFactory().createServiceComponent(applicationComponent, service);
     }
 
     /**
-     * Looks up application-scoped component by given context instance.
-     * Useful for injecting to something outside of activity or service.
+     * Removes internal state for given application instance.
      *
-     * @param context Context used to look up holder.
-     * @see ApplicationComponentHolder
+     * @see Application#onTerminate()
      */
-    public static ScabbardApplicationComponent getApplicationComponent(Context context) {
-        ApplicationComponentHolder holder = (ApplicationComponentHolder) context.getApplicationContext();
-        return holder.getApplicationComponent();
-    }
-
-    /**
-     * Looks up application-scoped component by given context instance.
-     * Useful to inject to fragment, as you might not need fragment-scoped component.
-     *
-     * @param activity used to look up holder.
-     * @see ActivityComponentHolder
-     */
-    public static ScabbardActivityComponent getActivityComponent(Activity activity) {
-        ActivityComponentHolder holder = (ActivityComponentHolder) activity;
-        return holder.getActivityComponent();
-    }
-
-    private static ComponentFactory getComponentFactory(Context context) {
-        return ((ComponentFactoryHolder) context.getApplicationContext()).getComponentFactory();
+    public static void onTerminateApplication(Application application) {
+        APPLICATION_SCOPE_MANAGER.unregisterScope(application);
     }
 }

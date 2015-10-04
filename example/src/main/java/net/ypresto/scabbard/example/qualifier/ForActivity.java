@@ -13,17 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.ypresto.scabbard.holder;
+package net.ypresto.scabbard.example.qualifier;
 
-import net.ypresto.scabbard.Scabbard;
-import net.ypresto.scabbard.component.ScabbardActivityComponent;
+import java.lang.annotation.Retention;
 
-/**
- * Implement this in your custom {@link android.app.Activity} subclass.
- */
-public interface ActivityComponentHolder {
-    /**
-     * Provides activity component for {@link Scabbard}.
-     */
-    ScabbardActivityComponent getActivityComponent();
+import javax.inject.Qualifier;
+
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
+@Qualifier
+@Retention(RUNTIME)
+public @interface ForActivity {
 }

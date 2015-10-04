@@ -17,12 +17,13 @@ package net.ypresto.scabbard.example.component;
 
 import net.ypresto.scabbard.component.ScabbardActivityComponent;
 import net.ypresto.scabbard.example.MainActivity;
+import net.ypresto.scabbard.example.module.MyActivityModule;
 import net.ypresto.scabbard.example.scope.ActivityScope;
 
 import dagger.Subcomponent;
 
 @ActivityScope
-@Subcomponent
+@Subcomponent(modules = MyActivityModule.class)
 public interface MyActivityComponent extends ScabbardActivityComponent {
     MyFragmentComponent createFragmentComponent();
 

@@ -20,13 +20,14 @@ import android.app.Application;
 import android.support.v4.app.Fragment;
 
 import net.ypresto.scabbard.Scabbard;
+import net.ypresto.scabbard.component.ComponentFactory;
 import net.ypresto.scabbard.example.component.MyActivityComponent;
 import net.ypresto.scabbard.example.component.MyApplicationComponent;
 import net.ypresto.scabbard.example.component.MyFragmentComponent;
 
 public class ComponentHelper {
-    public static MyApplicationComponent createApplicationComponent(Application application) {
-        return (MyApplicationComponent) Scabbard.createApplicationComponent(application);
+    public static MyApplicationComponent createApplicationComponent(Application application, ComponentFactory componentFactory) {
+        return (MyApplicationComponent) Scabbard.createApplicationComponent(application, componentFactory);
     }
 
     public static MyActivityComponent createActivityComponent(Activity activity) {

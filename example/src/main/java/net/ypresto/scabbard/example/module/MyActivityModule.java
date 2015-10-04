@@ -13,17 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.ypresto.scabbard.holder;
+package net.ypresto.scabbard.example.module;
 
-import net.ypresto.scabbard.Scabbard;
-import net.ypresto.scabbard.component.ScabbardApplicationComponent;
+import android.app.Activity;
+import android.content.Context;
 
-/**
- * Implement this in your custom {@link android.app.Application} subclass.
- */
-public interface ApplicationComponentHolder {
-    /**
-     * Provides application component for {@link Scabbard}.
-     */
-    ScabbardApplicationComponent getApplicationComponent();
+import net.ypresto.scabbard.example.qualifier.ForActivity;
+
+import dagger.Module;
+import dagger.Provides;
+
+@Module
+public class MyActivityModule {
+    private final Activity activity;
+
+    public MyActivityModule(Activity activity) {
+        this.activity = activity;
+    }
+
+    @Provides
+    @ForActivity
+    Context providesActivityContext() {
+        return activity;
+    }
 }

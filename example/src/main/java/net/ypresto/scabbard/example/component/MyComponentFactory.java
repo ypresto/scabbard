@@ -25,6 +25,7 @@ import net.ypresto.scabbard.component.ScabbardActivityComponent;
 import net.ypresto.scabbard.component.ScabbardApplicationComponent;
 import net.ypresto.scabbard.component.ScabbardFragmentComponent;
 import net.ypresto.scabbard.component.ScabbardServiceComponent;
+import net.ypresto.scabbard.example.module.MyActivityModule;
 
 public class MyComponentFactory implements ComponentFactory {
     @Override
@@ -34,7 +35,7 @@ public class MyComponentFactory implements ComponentFactory {
 
     @Override
     public ScabbardActivityComponent createActivityComponent(ScabbardApplicationComponent applicationComponent, Activity activity) {
-        return ((MyApplicationComponent) applicationComponent).createActivityComponent();
+        return ((MyApplicationComponent) applicationComponent).createActivityComponent(new MyActivityModule(activity));
     }
 
     @Override

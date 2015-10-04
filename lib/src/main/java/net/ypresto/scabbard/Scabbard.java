@@ -18,6 +18,7 @@ package net.ypresto.scabbard;
 import android.app.Activity;
 import android.app.Application;
 import android.app.Service;
+import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 
@@ -72,6 +73,23 @@ public class Scabbard {
         ApplicationScopeInfo scopeInfo = APPLICATION_SCOPE_MANAGER.getScopeInfo(service);
         ScabbardApplicationComponent applicationComponent = scopeInfo.getApplicationComponent();
         return scopeInfo.getComponentFactory().createServiceComponent(applicationComponent, service);
+    }
+
+    /**
+     * Get application-scoped component for given context.
+     * Useful for injecting to something outside of activity or service.
+     */
+    public static ScabbardApplicationComponent getApplicationComponent(Context context) {
+        return APPLICATION_SCOPE_MANAGER.getScopeInfo(context).getApplicationComponent();
+    }
+
+    /**
+     * Get activity-scoped component for given activity.
+     * Useful for injecting to Fragment without creating fragment scope.
+     * Use {@link #createFragmentComponent(Fragment)} if you want to scope it.
+     */
+    public static ScabbardActivityComponent getActivityComponent(Activity activity) {
+        return APPLICATION_SCOPE_MANAGER.getScopeInfo(activity).getActivityComponentManager().getComponent(activity);
     }
 
     /**

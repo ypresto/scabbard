@@ -15,17 +15,26 @@ library).
 This library automatically manages scoped components in Application,
 Activity, Fragment, Service. Only things you should do are:
 
-- Implement `ComponentFacotry`.
-- Mark your components with `Scabbard***Component` interface.
-- (Optional) Wrap helper to cast to actual component type from
-  `Scabbard***Component`.
-- Call helper methods from `onCreate()`, like
-  `ComponentHelper.createApplicationComponent(this).inject(this);`
+## Usage
+
+One you have done first setup, you just call helper method from every onCreate().
+
+```java
+public void onCreate(Bundle onSavedInstanceState) {
+    ComponentHelper.createActivityComponent(this).inject(this);
+    super.onCreate();
+}
+
+```
+
+- See [Step by Step Setup](https://github.com/ypresto/scabbard/wiki/Step-by-Step-Setup) for details.
+- See example directory for working Android application.
+- Refer [document of Dagger 2](http://google.github.io/dagger/) for usage of scoped bindings.
 
 ## Requirements / Limitations
 
 - Designed for Dagger 2. Scoped bindings is not supported in Dagger 1.
-- Android >= 4.0. Because ActivityLifecycleCallbacks is used to release 
+- Android >= 4.0. Because ActivityLifecycleCallbacks is used to release
   component.
 - One component per one Activity/Fragment/Service design is not
   supported.
@@ -35,15 +44,22 @@ Activity, Fragment, Service. Only things you should do are:
 
 ## Installation
 
-Gradle dependency:
+Gradle:
 
-TBD. Use [jitpack](https://jitpack.io/) for now.
+```groovy
+dependencies {
+    compile 'net.ypresto.scabbard:scabbard:0.1.0'
+}
+```
 
-## Setup and examples
+Currently only available from jcenter repo, which is default of Android project.
+If your project does not use jcenter yet, please put below.
 
-- See example directory for working android application and more details.
-- [Step by Step Setup](https://github.com/ypresto/scabbard/wiki/Step-by-Step-Setup)
-- Refer [document of Dagger 2](http://google.github.io/dagger/) for usage of scoped bindings.
+```groovy
+repositories {
+    jcenter()
+}
+```
 
 ## TODO
 

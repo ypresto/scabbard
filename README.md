@@ -31,132 +31,17 @@ helper methods from `onCreate()`.
   not supported for now (NOTE: AppCompatActivity is almost required for
   material design).
 
-## Step By Step Setup
+## Installation
 
-See example directory for working android application and more details.
-
-### 1. Add dependency to `build.gradle`.
+Gradle dependency:
 
 TBD. Use jitpack for now.
 
-### 2. Implement `ComponentFactory` to provide actual Dagger components.
+## Setup and examples
 
-```java
-public class MyComponentFactory implements ComponentFactory {
-    @Override
-    public ScabbardApplicationComponent createApplicationComponent(Application application) {
-        return DaggerMyApplicationComponent.create();
-    }
-
-    @Override
-    public ScabbardActivityComponent createActivityComponent(ScabbardApplicationComponent applicationComponent, Activity activity) {
-        return ((MyApplicationComponent) applicationComponent).createActivityComponent();
-    }
-
-    ...
-```
-
-### 3. Implement `ComponentFactoryHolder` and `ApplicationComponentHolder` in your custom Applciation class.
-
-
-```java
-public class MyApplication extends Application implements ComponentFactoryHolder, ApplicationComponentHolder {
-    private final MyComponentFactory componentFactory = new MyComponentFactory();
-    private MyApplicationComponent applicationComponent;
-
-    @Override
-    public void onCreate() {
-        mApplicationComponent = ComponentHelper.createApplicationComponent(this);
-        mApplicationComponent.inject(this);
-        super.onCreate();
-        ...
-    }
-
-    @Override
-    public ScabbardApplicationComponent getApplicationComponent() {
-        return mApplicationComponent;
-    }
-
-    // NOTE: You can override this method in test Application to mock injected instances.
-    @Override
-    public ComponentFactory getComponentFactory() {
-        return mComponentFactory;
-    }
-```
-
-
-### 4. Make your components extend `Scabbard***Component` marker interfaces.
-
-```java
-public interface MyActivityComponent extends ScabbardActivityComponent {
-```
-
-### 5. Implement `ActivityComponentHolder` in your all activities
-
-NOTE: You can skip this step if fragment-scoped component is not necessary.
-
-You might want to have a base activity.
-
-```java
-// NOTE: Any application-specific logic should not be placed here!
-public abstract class MyBaseActivity extends AppCompatActivity implements ActivityComponentHolder {
-    private MyActivityComponent mActivityComponent;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        mActivityComponent = ComponentHelper.createActivityComponent(this);
-        inject(mActivityComponent);
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
-    public MyActivityComponent getActivityComponent() {
-        return mActivityComponent;
-    }
-
-    protected abstract void inject(MyActivityComponent component);
-}
-```
-
-Then implement in every activity.
-
-```java
-@Override
-protected void inject(MyActivityComponent component) {
-    component.inject(this);
-}
-```
-
-### 6. Create ComponentHelper for casting.
-
-This library uses marker interface for component return types, as actual
-component types are created by app developer.
-It is more convenient if you create helper class which delegates to methods of
-`Scabbard` class and casts to actual components.
-
-```java
-public class ComponentHelper {
-    public static MyApplicationComponent createApplicationComponent(Application application) {
-        return (MyApplicationComponent) Scabbard.createApplicationComponent(application);
-    }
-
-    ...
-```
-
-### 7. Call helper methods from onCreate().
-
-```java
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        ComponentHelper.createFragmentComponent(this).inject(this);
-        super.onCreate(savedInstanceState);
-        ...
-    }
-```
-
-## Usage of scoped bindings
-
-Refer [document of Dagger 2](http://google.github.io/dagger/)
+- See example directory for working android application and more details.
+- [Step by Step Setup](https://github.com/ypresto/scabbard/wiki/Step-by-Step-Setup)
+- Refer [document of Dagger 2](http://google.github.io/dagger/) for usage of scoped bindings.
 
 ## TODO
 

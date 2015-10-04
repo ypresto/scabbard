@@ -37,6 +37,8 @@ Gradle dependency:
 
 TBD. Use jitpack for now.
 
+https://jitpack.io/#ypresto/scabbard/485381696d
+
 ## Setup and examples
 
 - See example directory for working android application and more details.

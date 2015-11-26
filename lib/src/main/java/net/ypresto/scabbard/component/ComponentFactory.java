@@ -23,13 +23,13 @@ import android.support.v4.app.Fragment;
 /**
  * Factory interface for components. Implement this to provide components used by scabbard.
  */
-public interface ComponentFactory {
+public abstract class ComponentFactory {
     /**
      * Creates application-scoped component.
      *
      * @param application Application instance for instantiating modules.
      */
-    ScabbardApplicationComponent createApplicationComponent(Application application);
+    public abstract ScabbardApplicationComponent createApplicationComponent(Application application);
 
     /**
      * Creates activity-scoped component.
@@ -38,7 +38,7 @@ public interface ComponentFactory {
      * @param activity             Activity instance for instantiating modules.
      * @param componentParameter   Optional parameter object used for instantiating modules.
      */
-    ScabbardActivityComponent createActivityComponent(ScabbardApplicationComponent applicationComponent, Activity activity, ComponentParameter componentParameter);
+    public abstract ScabbardActivityComponent createActivityComponent(ScabbardApplicationComponent applicationComponent, Activity activity, ComponentParameter componentParameter);
 
     /**
      * Creates fragment-scoped component.
@@ -46,7 +46,9 @@ public interface ComponentFactory {
      * @param activityComponent Parent component.
      * @param fragment          Fragment instance for instantiating modules.
      */
-    ScabbardFragmentComponent createFragmentComponent(ScabbardActivityComponent activityComponent, Fragment fragment);
+    public ScabbardFragmentComponent createFragmentComponent(ScabbardActivityComponent activityComponent, Fragment fragment) {
+        throw new UnsupportedOperationException("createFragmentComponent is not implemented.");
+    }
 
     /**
      * Creates service-scoped component.
@@ -54,5 +56,7 @@ public interface ComponentFactory {
      * @param applicationComponent Parent component.
      * @param service              Service instance for instantiating modules.
      */
-    ScabbardServiceComponent createServiceComponent(ScabbardApplicationComponent applicationComponent, Service service);
+    public ScabbardServiceComponent createServiceComponent(ScabbardApplicationComponent applicationComponent, Service service) {
+        throw new UnsupportedOperationException("createServiceComponent is not implemented.");
+    }
 }

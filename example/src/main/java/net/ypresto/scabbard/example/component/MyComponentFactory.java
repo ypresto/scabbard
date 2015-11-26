@@ -17,7 +17,6 @@ package net.ypresto.scabbard.example.component;
 
 import android.app.Activity;
 import android.app.Application;
-import android.app.Service;
 import android.support.v4.app.Fragment;
 
 import net.ypresto.scabbard.component.ComponentFactory;
@@ -25,11 +24,10 @@ import net.ypresto.scabbard.component.ComponentParameter;
 import net.ypresto.scabbard.component.ScabbardActivityComponent;
 import net.ypresto.scabbard.component.ScabbardApplicationComponent;
 import net.ypresto.scabbard.component.ScabbardFragmentComponent;
-import net.ypresto.scabbard.component.ScabbardServiceComponent;
 import net.ypresto.scabbard.example.module.MyActivityModule;
 import net.ypresto.scabbard.example.module.MyUserModule;
 
-public class MyComponentFactory implements ComponentFactory {
+public class MyComponentFactory extends ComponentFactory {
     @Override
     public ScabbardApplicationComponent createApplicationComponent(Application application) {
         return DaggerMyApplicationComponent.create();
@@ -45,10 +43,5 @@ public class MyComponentFactory implements ComponentFactory {
     @Override
     public ScabbardFragmentComponent createFragmentComponent(ScabbardActivityComponent activityComponent, Fragment fragment) {
         return ((MyActivityComponent) activityComponent).createFragmentComponent();
-    }
-
-    @Override
-    public ScabbardServiceComponent createServiceComponent(ScabbardApplicationComponent applicationComponent, Service service) {
-        throw new UnsupportedOperationException("Service component is not used.");
     }
 }

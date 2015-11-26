@@ -21,11 +21,13 @@ import android.app.Service;
 import android.support.v4.app.Fragment;
 
 import net.ypresto.scabbard.component.ComponentFactory;
+import net.ypresto.scabbard.component.ComponentParameter;
 import net.ypresto.scabbard.component.ScabbardActivityComponent;
 import net.ypresto.scabbard.component.ScabbardApplicationComponent;
 import net.ypresto.scabbard.component.ScabbardFragmentComponent;
 import net.ypresto.scabbard.component.ScabbardServiceComponent;
 import net.ypresto.scabbard.example.module.MyActivityModule;
+import net.ypresto.scabbard.example.module.MyUserModule;
 
 public class MyComponentFactory implements ComponentFactory {
     @Override
@@ -34,8 +36,10 @@ public class MyComponentFactory implements ComponentFactory {
     }
 
     @Override
-    public ScabbardActivityComponent createActivityComponent(ScabbardApplicationComponent applicationComponent, Activity activity) {
-        return ((MyApplicationComponent) applicationComponent).createActivityComponent(new MyActivityModule(activity));
+    public ScabbardActivityComponent createActivityComponent(ScabbardApplicationComponent applicationComponent, Activity activity, ComponentParameter componentParameter) {
+        MyComponentParameter myComponentParameter = (MyComponentParameter) componentParameter;
+        MyUserModule myUserModule = myComponentParameter != null ? new MyUserModule(myComponentParameter.getUserId()) : new MyUserModule();
+        return ((MyApplicationComponent) applicationComponent).createActivityComponent(new MyActivityModule(activity), myUserModule);
     }
 
     @Override

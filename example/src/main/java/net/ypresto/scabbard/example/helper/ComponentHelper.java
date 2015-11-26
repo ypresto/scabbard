@@ -23,6 +23,7 @@ import net.ypresto.scabbard.Scabbard;
 import net.ypresto.scabbard.component.ComponentFactory;
 import net.ypresto.scabbard.example.component.MyActivityComponent;
 import net.ypresto.scabbard.example.component.MyApplicationComponent;
+import net.ypresto.scabbard.example.component.MyComponentParameter;
 import net.ypresto.scabbard.example.component.MyFragmentComponent;
 
 public class ComponentHelper {
@@ -32,6 +33,10 @@ public class ComponentHelper {
 
     public static MyActivityComponent createActivityComponent(Activity activity) {
         return (MyActivityComponent) Scabbard.createActivityComponent(activity);
+    }
+
+    public static MyActivityComponent createActivityComponentForUserId(Activity activity, int userId) {
+        return (MyActivityComponent) Scabbard.createActivityComponent(activity, new MyComponentParameter(userId));
     }
 
     public static MyFragmentComponent createFragmentComponent(Fragment fragment) {

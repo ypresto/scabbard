@@ -18,6 +18,7 @@ package net.ypresto.scabbard.example.component;
 import net.ypresto.scabbard.component.ScabbardApplicationComponent;
 import net.ypresto.scabbard.example.MyApplication;
 import net.ypresto.scabbard.example.module.MyActivityModule;
+import net.ypresto.scabbard.example.module.MyUserModule;
 
 import javax.inject.Singleton;
 
@@ -26,7 +27,7 @@ import dagger.Component;
 @Singleton
 @Component
 public interface MyApplicationComponent extends ScabbardApplicationComponent {
-    MyActivityComponent createActivityComponent(MyActivityModule myActivityModule);
+    MyActivityComponent createActivityComponent(MyActivityModule myActivityModule, MyUserModule myUserModule);
 
     void inject(MyApplication target);
 }

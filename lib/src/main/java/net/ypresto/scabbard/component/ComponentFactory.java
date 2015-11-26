@@ -36,8 +36,9 @@ public interface ComponentFactory {
      *
      * @param applicationComponent Parent component.
      * @param activity             Activity instance for instantiating modules.
+     * @param componentParameter   Optional parameter object used for instantiating modules.
      */
-    ScabbardActivityComponent createActivityComponent(ScabbardApplicationComponent applicationComponent, Activity activity);
+    ScabbardActivityComponent createActivityComponent(ScabbardApplicationComponent applicationComponent, Activity activity, ComponentParameter componentParameter);
 
     /**
      * Creates fragment-scoped component.

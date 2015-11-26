@@ -8,4 +8,8 @@
     <string name="action_settings">Settings</string>
     <string name="relaunch_activity">Relaunch Activity</string>
     <string name="replace_fragment">Replace Fragment</string>
+    <string name="title_activity_user_scoped">UserScopedActivity</string>
+    <string name="user_id">User ID</string>
+    <string name="launch_user_information_activity">Launch User Information Activity</string>
+    <string name="user_information_object_in_fragment">User Information Object in Fragment:</string>
 </resources>

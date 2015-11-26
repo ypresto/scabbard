@@ -23,6 +23,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 
 import net.ypresto.scabbard.component.ComponentFactory;
+import net.ypresto.scabbard.component.ComponentParameter;
 import net.ypresto.scabbard.component.ScabbardActivityComponent;
 import net.ypresto.scabbard.component.ScabbardApplicationComponent;
 import net.ypresto.scabbard.component.ScabbardFragmentComponent;
@@ -48,9 +49,16 @@ public class Scabbard {
      * Creates activity-scoped component using {@link ScabbardApplicationComponent} and {@link ComponentFactory}.
      */
     public static ScabbardActivityComponent createActivityComponent(Activity activity) {
+        return createActivityComponent(activity, null);
+    }
+
+    /**
+     * Creates activity-scoped component using {@link ScabbardApplicationComponent} and {@link ComponentFactory}, with parameter.
+     */
+    public static ScabbardActivityComponent createActivityComponent(Activity activity, ComponentParameter componentParameter) {
         ApplicationScopeInfo scopeInfo = APPLICATION_SCOPE_MANAGER.getScopeInfo(activity);
         ScabbardApplicationComponent applicationComponent = scopeInfo.getApplicationComponent();
-        ScabbardActivityComponent activityComponent = scopeInfo.getComponentFactory().createActivityComponent(applicationComponent, activity);
+        ScabbardActivityComponent activityComponent = scopeInfo.getComponentFactory().createActivityComponent(applicationComponent, activity, componentParameter);
         scopeInfo.getActivityComponentManager().setComponent(activity, activityComponent);
         return activityComponent;
     }

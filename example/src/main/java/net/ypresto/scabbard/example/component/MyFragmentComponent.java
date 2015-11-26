@@ -17,6 +17,7 @@ package net.ypresto.scabbard.example.component;
 
 import net.ypresto.scabbard.component.ScabbardFragmentComponent;
 import net.ypresto.scabbard.example.MainActivityFragment;
+import net.ypresto.scabbard.example.UserInformationActivityFragment;
 import net.ypresto.scabbard.example.scope.FragmentScope;
 
 import dagger.Subcomponent;
@@ -25,4 +26,5 @@ import dagger.Subcomponent;
 @Subcomponent
 public interface MyFragmentComponent extends ScabbardFragmentComponent {
     void inject(MainActivityFragment mainActivityFragment);
+    void inject(UserInformationActivityFragment userInformationActivityFragment);
 }

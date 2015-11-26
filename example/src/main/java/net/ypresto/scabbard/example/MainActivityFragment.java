@@ -23,6 +23,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import net.ypresto.scabbard.example.helper.ComponentHelper;
@@ -71,6 +72,13 @@ public class MainActivityFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 getFragmentManager().beginTransaction().replace(R.id.container, new MainActivityFragment()).commit();
+            }
+        });
+        final EditText userIdEditText = (EditText) view.findViewById(R.id.user_id_edit_text);
+        view.findViewById(R.id.launch_user_information_activity).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().startActivity(UserInformationActivity.createIntent(getActivity(), Integer.parseInt(userIdEditText.getText().toString())));
             }
         });
     }

@@ -54,4 +54,30 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/replace_fragment" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="5dp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#aaa" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="5dp" />
+
+    <EditText
+        android:id="@+id/user_id_edit_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/user_id"
+        android:inputType="number" />
+
+    <Button
+        android:id="@+id/launch_user_information_activity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/launch_user_information_activity" />
 </LinearLayout>
